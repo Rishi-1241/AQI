@@ -1,4 +1,4 @@
-# LawSikhoAssistant - Detailed README
+# LawSikhoAssistant - RAGBOT
 
 ## Description
 
