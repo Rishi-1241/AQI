@@ -37,26 +37,23 @@ Create a file named `.env` in the root directory of your project. This file will
 
 Replace the placeholders with your actual API keys and credentials.
 
-## Code Overview
 
-### Web Scraping, Content Extraction, and Storing in Firestore
+### 3. Web Scraping, Content Extraction, and Storing in Firestore
 
-1. **Web Scraping and Content Extraction**
+A. **Web Scraping and Content Extraction**
    - **`fetch_and_parse_url(url)`** retrieves and parses HTML content into a BeautifulSoup object. **`extract_headings_with_content(soup)`** organizes and extracts headings with their associated content. **`extract_specific_div_content(soup)`** retrieves text from `div` elements with the class `refundPolicy`. **`extract_urls(soup, base_url)`** collects and resolves URLs from anchor tags, and **`format_extracted_content(headings_content, div_content, urls)`** combines and formats this content into a structured output.
 
-2. **Storing Chunks in Firestore**
+B. **Storing Chunks in Firestore**
    - **Initialize Firestore Client and Read Data File:** Sets up the Firestore client with credentials from a JSON file and reads the text data from a file.
    - **Process and Store Text Chunks:** Splits the text data into chunks using `RecursiveCharacterTextSplitter`, embeds them with OpenAI embeddings, and stores them in Firestore. Existing documents in the collection are not re-inserted.
    - **Subsequent Steps:** After storing, the system uses indexing methods to retrieve relevant chunks based on user queries, enabling accurate and contextually appropriate responses.
   
-## Code Overview
+### 4. LawSikhoAssistant Class
 
-### LawSikhoAssistant Class
-
-1. **Initialization**
+A. **Initialization**
    - **Overview:** The `LawSikhoAssistant` class initializes essential components for the chatbot. It loads environment variables, sets up the Firestore client with credentials, initializes OpenAI embeddings, creates a Firestore vector store, and configures a text splitter. Additionally, it initializes a retriever to fetch relevant documents from the Firestore collection based on similarity searches. The class also sets up the language model and defines prompt templates for handling user queries.
 
-2. **Prompt Templates**
+B. **Prompt Templates**
    - **Prompt for Query Handling:** 
      ```markdown
      You are the sales executive for LawSikho, a firm providing high-quality legal courses. Your role is to deliver friendly and knowledgeable customer service by answering inquiries about our courses and actively promoting enrollment in our programs. Using the context provided, answer the customer's question accurately and precisely.
@@ -84,7 +81,7 @@ Replace the placeholders with your actual API keys and credentials.
      Standalone question:
      ```
 
-3. **Function Descriptions**
+C. **Function Descriptions**
    - **`_format_chat_history(chat_history)`**: Converts the chat history into a format suitable for processing, by transforming human and AI messages into `HumanMessage` and `AIMessage` objects.
    
    - **`_search_query()`**: Determines whether there is chat history and processes it accordingly. It condenses follow-up questions into standalone queries and prepares the data for retrieval and response generation.
@@ -93,28 +90,21 @@ Replace the placeholders with your actual API keys and credentials.
 
    - **`query(user_query)`**: Handles user queries by invoking the processing chain with the input data. It manages chat history and returns the chatbot’s response based on the processed input.
   
-   ## Flask Application for Twilio Integration
-
-### Overview
+### 5. Flask Application for Twilio Integration
 
 This Flask application integrates with Twilio to handle and respond to incoming WhatsApp messages using the `LawSikhoAssistant` chatbot.
 
 ### Key Components
 
-1. **Initialization**
+A. **Initialization**
    - **Flask Setup:** Initializes the Flask app and loads environment variables.
    - **Chatbot Instance:** Creates an instance of `LawSikhoAssistant` to process messages.
    - **Logging Configuration:** Sets up logging for debugging and monitoring.
 
-2. **Message Handling**
+B. **Message Handling**
    - **Route `/twilio`:** Receives POST requests from Twilio with user messages.
      - **Process:** Extracts the message and sender details, processes the message with the chatbot, and sends a response back through Twilio.
      - **Error Handling:** Logs errors and returns a generic error message if needed.
 
 
 In summary, this class encapsulates all functionalities required for the LawSikho chatbot, including data initialization, query processing, and response generation.
-
-
-
-
-
