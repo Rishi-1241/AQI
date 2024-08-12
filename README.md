@@ -92,6 +92,25 @@ Replace the placeholders with your actual API keys and credentials.
    - **`_create_chain()`**: Constructs a processing chain that integrates context retrieval, question handling, and response generation. It splits text into manageable chunks, filters them, and uses a prompt template to create responses with the language model.
 
    - **`query(user_query)`**: Handles user queries by invoking the processing chain with the input data. It manages chat history and returns the chatbot’s response based on the processed input.
+  
+   ## Flask Application for Twilio Integration
+
+### Overview
+
+This Flask application integrates with Twilio to handle and respond to incoming WhatsApp messages using the `LawSikhoAssistant` chatbot.
+
+### Key Components
+
+1. **Initialization**
+   - **Flask Setup:** Initializes the Flask app and loads environment variables.
+   - **Chatbot Instance:** Creates an instance of `LawSikhoAssistant` to process messages.
+   - **Logging Configuration:** Sets up logging for debugging and monitoring.
+
+2. **Message Handling**
+   - **Route `/twilio`:** Receives POST requests from Twilio with user messages.
+     - **Process:** Extracts the message and sender details, processes the message with the chatbot, and sends a response back through Twilio.
+     - **Error Handling:** Logs errors and returns a generic error message if needed.
+
 
 In summary, this class encapsulates all functionalities required for the LawSikho chatbot, including data initialization, query processing, and response generation.
 
