@@ -39,25 +39,16 @@ Replace the placeholders with your actual API keys and credentials.
 
 ## Code Overview
 
-### Web Scraping and Content Extraction
+### Web Scraping, Content Extraction, and Storing in Firestore
 
-1. **`fetch_and_parse_url(url)`** and **`extract_headings_with_content(soup)`**
-   - **Overview:** `fetch_and_parse_url(url)` retrieves and parses HTML content from the specified URL into a BeautifulSoup object. `extract_headings_with_content(soup)` then organizes and extracts headings along with their associated content, such as paragraphs and lists.
+1. **Web Scraping and Content Extraction**
+   - **`fetch_and_parse_url(url)`** retrieves and parses HTML content into a BeautifulSoup object. **`extract_headings_with_content(soup)`** organizes and extracts headings with their associated content. **`extract_specific_div_content(soup)`** retrieves text from `div` elements with the class `refundPolicy`. **`extract_urls(soup, base_url)`** collects and resolves URLs from anchor tags, and **`format_extracted_content(headings_content, div_content, urls)`** combines and formats this content into a structured output.
 
-2. **`extract_specific_div_content(soup)`**, **`extract_urls(soup, base_url)`**, and **`format_extracted_content(headings_content, div_content, urls)`**
-   - **Overview:** `extract_specific_div_content(soup)` retrieves text from `div` elements with the class `refundPolicy`. `extract_urls(soup, base_url)` collects and resolves URLs from anchor tags, while `format_extracted_content(headings_content, div_content, urls)` combines and formats the extracted content into a structured output.
-  
-## Code Overview
+2. **Storing Chunks in Firestore**
+   - **Initialize Firestore Client and Read Data File:** Sets up the Firestore client with credentials from a JSON file and reads the text data from a file.
+   - **Process and Store Text Chunks:** Splits the text data into chunks using `RecursiveCharacterTextSplitter`, embeds them with OpenAI embeddings, and stores them in Firestore. Existing documents in the collection are not re-inserted.
+   - **Subsequent Steps:** After storing, the system uses indexing methods to retrieve relevant chunks based on user queries, enabling accurate and contextually appropriate responses.
 
-### Storing Chunks in Firestore
 
-1. **Initialize Firestore Client and Read Data File**
-   - **Overview:** The Firestore client is set up using credentials from a JSON file, and the text data is read from a file. This ensures that the Firestore client is properly authenticated and the data is ready for processing.
-
-2. **Process and Store Text Chunks**
-   - **Overview:** The text data is split into smaller chunks using `RecursiveCharacterTextSplitter`. These chunks are then embedded with OpenAI embeddings and stored in a Firestore collection. If the collection already contains documents, it avoids re-insertion.
-
-3. **Subsequent Steps**
-   - **Overview:** After storing the chunks and their embeddings in Firestore, the system will use indexing methods to efficiently retrieve relevant chunks based on user queries. This process ensures that the chatbot can deliver accurate and contextually appropriate responses by accessing the stored data effectively.
 
 
