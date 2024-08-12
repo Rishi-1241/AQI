@@ -48,6 +48,53 @@ Replace the placeholders with your actual API keys and credentials.
    - **Initialize Firestore Client and Read Data File:** Sets up the Firestore client with credentials from a JSON file and reads the text data from a file.
    - **Process and Store Text Chunks:** Splits the text data into chunks using `RecursiveCharacterTextSplitter`, embeds them with OpenAI embeddings, and stores them in Firestore. Existing documents in the collection are not re-inserted.
    - **Subsequent Steps:** After storing, the system uses indexing methods to retrieve relevant chunks based on user queries, enabling accurate and contextually appropriate responses.
+  
+## Code Overview
+
+### LawSikhoAssistant Class
+
+1. **Initialization**
+   - **Overview:** The `LawSikhoAssistant` class initializes essential components for the chatbot. It loads environment variables, sets up the Firestore client with credentials, initializes OpenAI embeddings, creates a Firestore vector store, and configures a text splitter. Additionally, it initializes a retriever to fetch relevant documents from the Firestore collection based on similarity searches. The class also sets up the language model and defines prompt templates for handling user queries.
+
+2. **Prompt Templates**
+   - **Prompt for Query Handling:** 
+     ```markdown
+     You are the sales executive for LawSikho, a firm providing high-quality legal courses. Your role is to deliver friendly and knowledgeable customer service by answering inquiries about our courses and actively promoting enrollment in our programs. Using the context provided, answer the customer's question accurately and precisely.
+     Instructions:
+     Highlight the benefits and advantages of our courses based on the user’s needs.
+     Engage the user by asking questions about their priorities, goals, and background related to legal education.
+     Use bullet points for clarity in longer responses.
+     Enhance your response with 1-3 relevant emojis to convey a friendly tone, but avoid overuse.
+     Important:
+     Craft responses uniquely, avoiding rhetoric or repetitive promotional statements.
+     Do not include closing statements that repetitively ask for booking or enrolling.
+     Contact details: For more information or immediate assistance, call +91 98186 78383.
+     Example Query Handling:
+     Context: {context}
+     Question: {question}
+     ```
+
+   - **Prompt for Condensing Questions:**
+     ```markdown
+     Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question,
+     in its original language.
+     Chat History:
+     {chat_history}
+     Follow Up Input: {question}
+     Standalone question:
+     ```
+
+3. **Function Descriptions**
+   - **`_format_chat_history(chat_history)`**: Converts the chat history into a format suitable for processing, by transforming human and AI messages into `HumanMessage` and `AIMessage` objects.
+   
+   - **`_search_query()`**: Determines whether there is chat history and processes it accordingly. It condenses follow-up questions into standalone queries and prepares the data for retrieval and response generation.
+
+   - **`_create_chain()`**: Constructs a processing chain that integrates context retrieval, question handling, and response generation. It splits text into manageable chunks, filters them, and uses a prompt template to create responses with the language model.
+
+   - **`query(user_query)`**: Handles user queries by invoking the processing chain with the input data. It manages chat history and returns the chatbot’s response based on the processed input.
+
+In summary, this class encapsulates all functionalities required for the LawSikho chatbot, including data initialization, query processing, and response generation.
+
 
 
 
