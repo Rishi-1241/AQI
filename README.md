@@ -46,4 +46,18 @@ Replace the placeholders with your actual API keys and credentials.
 
 2. **`extract_specific_div_content(soup)`**, **`extract_urls(soup, base_url)`**, and **`format_extracted_content(headings_content, div_content, urls)`**
    - **Overview:** `extract_specific_div_content(soup)` retrieves text from `div` elements with the class `refundPolicy`. `extract_urls(soup, base_url)` collects and resolves URLs from anchor tags, while `format_extracted_content(headings_content, div_content, urls)` combines and formats the extracted content into a structured output.
+  
+## Code Overview
+
+### Storing Chunks in Firestore
+
+1. **Initialize Firestore Client and Read Data File**
+   - **Overview:** The Firestore client is set up using credentials from a JSON file, and the text data is read from a file. This ensures that the Firestore client is properly authenticated and the data is ready for processing.
+
+2. **Process and Store Text Chunks**
+   - **Overview:** The text data is split into smaller chunks using `RecursiveCharacterTextSplitter`. These chunks are then embedded with OpenAI embeddings and stored in a Firestore collection. If the collection already contains documents, it avoids re-insertion.
+
+3. **Subsequent Steps**
+   - **Overview:** After storing the chunks and their embeddings in Firestore, the system will use indexing methods to efficiently retrieve relevant chunks based on user queries. This process ensures that the chatbot can deliver accurate and contextually appropriate responses by accessing the stored data effectively.
+
 
